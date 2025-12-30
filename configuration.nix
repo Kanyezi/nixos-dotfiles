@@ -36,6 +36,12 @@
   programs.niri.enable = true;
   environment.etc."niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
 
+  # Kitty 终端配置
+  environment.etc."xdg/kitty/kitty.conf".text = builtins.readFile ./config/kitty.conf;
+
+  # Fuzzel 启动器配置
+  environment.etc."xdg/fuzzel/fuzzel.ini".text = builtins.readFile ./config/fuzzel.ini;
+
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
   
@@ -75,6 +81,11 @@
     pkgs-unstable.zed-editor
     v2raya
     unzip
+    # 社交通信应用
+    wechat-universal
+    linuxqq
+    steam
+    steam-run
     # VSCode Wayland 依赖
     libdrm
     mesa

@@ -42,7 +42,6 @@ window-rule{
 
 spawn-at-startup "zen-browser"
 spawn-at-startup "code"
-
 spawn-at-startup "qqmusic"
 spawn-at-startup "discord"
 spawn-at-startup "steam" "-system-composer"
