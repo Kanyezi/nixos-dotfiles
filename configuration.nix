@@ -34,7 +34,6 @@
   
 
   programs.niri.enable = true;
-  environment.etc."niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
 
   # Kitty 终端配置
   environment.etc."xdg/kitty/kitty.conf".text = builtins.readFile ./config/kitty.conf;
@@ -44,13 +43,6 @@
 
   # Niri 窗口管理器配置
   environment.etc."xdg/niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
-
-  # Fcitx5 配置
-  environment.etc."xdg/fcitx5/profile".text = builtins.readFile ./config/fcitx5/profile;
-
-  # Rime 配置
-  environment.etc."rime/default.custom.yaml".text = builtins.readFile ./config/rime/default.custom.yaml;
-  environment.etc."rime/luna_pinyin.custom.yaml".text = builtins.readFile ./config/rime/luna_pinyin.custom.yaml;
 
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
@@ -62,7 +54,7 @@
       naturalScrolling = true;
     };
   };
-  
+
   services.pipewire = {
      enable = true;
      pulse.enable = true;
@@ -77,6 +69,36 @@
     ];
   };
   
+  
+  # Create WeChat crash directories to prevent crashes
+  systemd.tmpfiles.rules = [
+    "d /home/gai_yk/.xwechat 0755 gai_yk users -"
+    "d /home/gai_yk/.xwechat/crashinfo 0755 gai_yk users -"
+    "d /home/gai_yk/.xwechat/crashinfo/attachments 0755 gai_yk users -"
+    "L+ /home/gai_yk/.config/fcitx5/profile - - - - /etc/xdg/fcitx5/profile"
+    "d /home/gai_yk/.local/share/fcitx5/rime 0755 gai_yk users -"
+    "L+ /home/gai_yk/.local/share/fcitx5/rime/default.custom.yaml - - - - /etc/rime/default.custom.yaml"
+    "L+ /home/gai_yk/.local/share/fcitx5/rime/luna_pinyin.custom.yaml - - - - /etc/rime/luna_pinyin.custom.yaml"
+  ];
+
+  # Rime 配置文件复制服务
+  systemd.services.copy-rime-config = {
+    description = "Copy Rime configuration files";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      User = "gai_yk";
+      ExecStart = "${pkgs.writeShellScript "copy-rime-config" ''
+        #!/bin/sh
+        RIME_DATA=$(find /nix/store -maxdepth 1 -name "*fcitx5-rime*" ! -name "*.drv" -type d | head -1)
+        if [ -n "$RIME_DATA" ] && [ -d "$RIME_DATA/share/rime-data" ]; then
+          cp -n "$RIME_DATA/share/rime-data/default.yaml" /home/gai_yk/.local/share/fcitx5/rime/ 2>/dev/null || true
+          cp -n "$RIME_DATA/share/rime-data/luna_pinyin.schema.yaml" /home/gai_yk/.local/share/fcitx5/rime/ 2>/dev/null || true
+        fi
+      ''}";
+    };
+  };
   
   services.openssh = {
     enable = true;
