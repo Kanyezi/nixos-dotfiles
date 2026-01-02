@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, self, ... }:
 
 {
   # Home-Manager 版本号要与 flake 对应
@@ -12,6 +12,7 @@
     fcitx5-gtk
     pkgs.qt6Packages.fcitx5-chinese-addons
     xwayland
+    zoxide
   ];
 
   # --- Shell -----------------------------------------------------------------
@@ -48,12 +49,13 @@
     };
   };
 
-   # fcitx5 服务
+  # fcitx5 服务
   systemd.user.services.fcitx5 = {
     Unit = {
       Description = "Fcitx5 Input Method";
       After = [ "graphical-session.target" ];
       PartOf = [ "graphical-session.target" ];
+      Wants = [ "graphical-session.target" ];
     };
     
     Service = {
@@ -89,5 +91,15 @@
   # home.sessionVariables.DISPLAY = ":0";
   home.sessionVariables = {
     DISPLAY = ":0";
+    # fcitx5 输入法环境变量
+    GTK_IM_MODULE = "fcitx5";
+    QT_IM_MODULE = "fcitx5";
+    XMODIFIERS = "@im=fcitx5";
+  };
+
+  # Niri 窗口管理器配置
+  xdg.configFile."niri/config.kdl" = {
+    text = builtins.readFile (self + "/config/niri.kdl");
+    force = true;
   };
 }

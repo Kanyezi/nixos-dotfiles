@@ -11,48 +11,47 @@ workspace "discord"
 workspace "qq"
 workspace "wechat"
 
-window-rule{
+window-rule {
     match app-id="zen"
     open-on-workspace "browser"
 }
-window-rule{
+window-rule {
     match app-id="qqmusic"
     open-on-workspace "music"
 }
-window-rule{
+window-rule {
     match app-id="Code"
     open-on-workspace "editor"
 }
-window-rule{
+window-rule {
     match app-id="discord"
     open-on-workspace "discord"
 }
-window-rule{
+window-rule {
     match app-id="steam"
     open-on-workspace "steam"
 }
-window-rule{
+window-rule {
     match app-id="QQ"
     open-on-workspace "qq"
 }
-window-rule{
+window-rule {
     match app-id="wechat"
     open-on-workspace "wechat"
 }
 
 spawn-at-startup "zen-browser"
-spawn-at-startup "code"
+spawn-at-startup "fcitx5"
 spawn-at-startup "qqmusic"
 spawn-at-startup "discord"
 spawn-at-startup "steam" "-system-composer"
 spawn-at-startup "linuxqq"
-spawn-at-startup "wechat-universal"
-spawn-at-startup "niri" "msg" "action" "focus-workspace" "browser"
 
 environment {
     GTK_IM_MODULE "fcitx"
     QT_IM_MODULE "fcitx"
-    XMODIFIERS "@im=fcitx"
+    XMODIFIERS "@im=fcitx5"
+    GTK_THEME "Adwaita:dark"
 }
 
 input {
@@ -64,12 +63,7 @@ input {
         }
     }
     touchpad {
-        tap-button-map left-right-middle
-        dwt enabled
-        disable-while-typing enabled
-    }
-    mouse {
-        natural-scroll false
+        tap-button-map "left-right-middle"
     }
 }
 
@@ -119,11 +113,8 @@ layout {
 
     // 你可以更改聚焦环的外观。
     focus-ring {
-        // 取消注释该行以禁用聚焦环。
-        off
-
         // 聚焦环从窗口向外延伸多少逻辑像素。
-        width 2
+        width 1
 
         // 颜色可以用多种方式设置：
         // - CSS 颜色名："red"
@@ -156,7 +147,6 @@ layout {
     border {
         // 设置与聚焦环相同。
         // 如果启用边框，通常会希望禁用聚焦环。
-        off
 
         width 2
         active-color "#7fff9bff"
@@ -217,14 +207,7 @@ layout {
     }
 }
 
-window-rule {
-    geometry-corner-radius 8
-    clip-to-geometry true
-}
 
-// Keybindings
-spawn-at-startup "kitty"
-spawn-at-startup "waybar"
 
 // Super key is Mod4
 binds {
@@ -484,9 +467,4 @@ binds {
 
     // 关闭显示器电源。要重新唤醒，请进行任意输入，例如移动鼠标或按下任意键。
     Mod+Shift+P { power-off-monitors; }
-}
-
-// Environment variables
-environment {
-    GTK_THEME "Adwaita:dark"
 }

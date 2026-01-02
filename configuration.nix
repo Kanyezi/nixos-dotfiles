@@ -42,8 +42,26 @@
   # Fuzzel 启动器配置
   environment.etc."xdg/fuzzel/fuzzel.ini".text = builtins.readFile ./config/fuzzel.ini;
 
+  # Niri 窗口管理器配置
+  environment.etc."xdg/niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
+
+  # Fcitx5 配置
+  environment.etc."xdg/fcitx5/profile".text = builtins.readFile ./config/fcitx5/profile;
+
+  # Rime 配置
+  environment.etc."rime/default.custom.yaml".text = builtins.readFile ./config/rime/default.custom.yaml;
+  environment.etc."rime/luna_pinyin.custom.yaml".text = builtins.readFile ./config/rime/luna_pinyin.custom.yaml;
+
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
+
+  # 启用触摸板自然滚动
+  services.libinput = {
+    enable = true;
+    touchpad = {
+      naturalScrolling = true;
+    };
+  };
   
   services.pipewire = {
      enable = true;
@@ -82,10 +100,12 @@
     v2raya
     unzip
     # 社交通信应用
-    wechat-universal
-    linuxqq
+    wechat
+    qq
     steam
     steam-run
+    brightnessctl
+    fcitx5
     # VSCode Wayland 依赖
     libdrm
     mesa
@@ -103,6 +123,11 @@
     adwaita-icon-theme
     papirus-icon-theme
     hicolor-icon-theme
+    # WeChat 依赖
+    libnotify
+    dbus
+    libappindicator
+    libdbusmenu
   ];
 
   # 6. 服务
@@ -125,15 +150,15 @@
 
   # fcitx5 环境变量 (Wayland)
   environment.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
-    INPUT_METHOD = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-    GLFW_IM_MODULE = "ibus";
+    GTK_USE_PORTAL = "1";
     # VSCode Wayland 支持
     NIXOS_OZONE_WL = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+  };
+  
+  # 覆盖 fcitx5 的默认 XMODIFIERS 设置
+  environment.variables = {
+    XMODIFIERS = lib.mkForce "@im=fcitx5";
   };
 
   # 7. Nix 自身
