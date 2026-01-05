@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, self,... }:
 
 {
   # Home-Manager 版本号要与 flake 对应

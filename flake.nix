@@ -28,7 +28,7 @@
         modules = [
           ({ config, ... }: {
             _module.args = {
-              inherit pkgs-unstable inputs;
+              inherit pkgs-unstable inputs self;
             };
           })
           inputs.noctalia.nixosModules.default
@@ -37,7 +37,8 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.gai_yk = import ./hosts/nixbook/home.nix;
+            home-manager.users.gai_yk = { ... }: { imports = [ ./hosts/nixbook/home.nix ]; };
+            home-manager.extraSpecialArgs = { inherit self; };
           }
         ];
       };
