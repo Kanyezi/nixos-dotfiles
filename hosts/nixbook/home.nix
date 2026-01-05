@@ -12,6 +12,7 @@
     fcitx5-gtk
     pkgs.qt6Packages.fcitx5-chinese-addons
     xwayland
+    zoxide
   ];
 
   # --- Shell -----------------------------------------------------------------
@@ -54,6 +55,7 @@
       Description = "Fcitx5 Input Method";
       After = [ "graphical-session.target" ];
       PartOf = [ "graphical-session.target" ];
+      Wants = [ "graphical-session.target" ];
     };
     
     Service = {
@@ -89,10 +91,14 @@
   # home.sessionVariables.DISPLAY = ":0";
   home.sessionVariables = {
     DISPLAY = ":0";
-    # fcitx5 输入法环境变量
+    # fcitx5 输入法环境变量 (Wayland)
+    INPUT_METHOD = "fcitx5";
     GTK_IM_MODULE = "fcitx5";
     QT_IM_MODULE = "fcitx5";
     XMODIFIERS = "@im=fcitx5";
+    WAYLAND_DISPLAY = "wayland-1";
+    SDL_IM_MODULE = "fcitx5";
+    GLFW_IM_MODULE = "ibus";
   };
 
   # Niri 窗口管理器配置

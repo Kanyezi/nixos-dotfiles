@@ -26,6 +26,12 @@
 
   networking.networkmanager.enable = true;
 
+  # OpenGL/Vulkan 配置 (Zed 依赖)
+  hardware.opengl = {
+    enable = true;
+    driSupport32Bit = true;
+  };
+
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -46,6 +52,25 @@
   services.pipewire = {
      enable = true;
      pulse.enable = true;
+  };
+
+  # XDG Desktop Portal 配置 (Zed 依赖)
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-wlr
+    ];
+    config = {
+      niri = {
+        default = "gtk";
+        "org.freedesktop.impl.portal.FileChooser" = "gtk";
+        "org.freedesktop.impl.portal.OpenURI" = "gtk";
+      };
+      common = {
+        default = "gtk";
+      };
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -77,6 +102,12 @@
     alacritty
     firefox
     pkgs-unstable.zed-editor
+    brightnessctl
+    (pkgs.writeShellScriptBin "iflow" ''
+      #!/run/current-system/sw/bin/bash
+      export PATH="/home/gai_yk/.nvm/versions/node/v22.21.1/bin:$PATH"
+      exec /home/gai_yk/.nvm/versions/node/v22.21.1/bin/iflow "$@"
+    '')
     v2raya
     unzip
     # VSCode Wayland 依赖
@@ -96,6 +127,10 @@
     adwaita-icon-theme
     papirus-icon-theme
     hicolor-icon-theme
+    # Zed 依赖
+    vulkan-tools
+    xdg-desktop-portal-wlr
+    libsecret
   ];
 
   # 6. 服务
@@ -118,15 +153,17 @@
 
   # fcitx5 环境变量 (Wayland)
   environment.sessionVariables = {
-    GTK_IM_MODULE = "fcitx";
-    QT_IM_MODULE = "fcitx";
-    XMODIFIERS = "@im=fcitx";
-    INPUT_METHOD = "fcitx";
-    SDL_IM_MODULE = "fcitx";
-    GLFW_IM_MODULE = "ibus";
+    GTK_USE_PORTAL = "1";
     # VSCode Wayland 支持
     NIXOS_OZONE_WL = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    # fcitx5 输入法支持
+    INPUT_METHOD = "fcitx5";
+  };
+  
+  # 覆盖 fcitx5 的默认 XMODIFIERS 设置
+  environment.variables = {
+    XMODIFIERS = lib.mkForce "@im=fcitx5";
   };
 
   # 7. Nix 自身
