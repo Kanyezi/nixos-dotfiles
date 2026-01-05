@@ -18,9 +18,8 @@
     type = "fcitx5";
     enable = true;
     fcitx5.addons = with pkgs; [
+      qt6Packages.fcitx5-chinese-addons
       fcitx5-rime
-      fcitx5-gtk
-      pkgs.qt6Packages.fcitx5-chinese-addons
     ];
   };
 
@@ -43,6 +42,8 @@
 
   # Niri 窗口管理器配置
   environment.etc."xdg/niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
+  
+
 
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
@@ -70,36 +71,6 @@
   };
   
   
-  # Create WeChat crash directories to prevent crashes
-  systemd.tmpfiles.rules = [
-    "d /home/gai_yk/.xwechat 0755 gai_yk users -"
-    "d /home/gai_yk/.xwechat/crashinfo 0755 gai_yk users -"
-    "d /home/gai_yk/.xwechat/crashinfo/attachments 0755 gai_yk users -"
-    "L+ /home/gai_yk/.config/fcitx5/profile - - - - /etc/xdg/fcitx5/profile"
-    "d /home/gai_yk/.local/share/fcitx5/rime 0755 gai_yk users -"
-    "L+ /home/gai_yk/.local/share/fcitx5/rime/default.custom.yaml - - - - /etc/rime/default.custom.yaml"
-    "L+ /home/gai_yk/.local/share/fcitx5/rime/luna_pinyin.custom.yaml - - - - /etc/rime/luna_pinyin.custom.yaml"
-  ];
-
-  # Rime 配置文件复制服务
-  systemd.services.copy-rime-config = {
-    description = "Copy Rime configuration files";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      Type = "oneshot";
-      User = "gai_yk";
-      ExecStart = "${pkgs.writeShellScript "copy-rime-config" ''
-        #!/bin/sh
-        RIME_DATA=$(find /nix/store -maxdepth 1 -name "*fcitx5-rime*" ! -name "*.drv" -type d | head -1)
-        if [ -n "$RIME_DATA" ] && [ -d "$RIME_DATA/share/rime-data" ]; then
-          cp -n "$RIME_DATA/share/rime-data/default.yaml" /home/gai_yk/.local/share/fcitx5/rime/ 2>/dev/null || true
-          cp -n "$RIME_DATA/share/rime-data/luna_pinyin.schema.yaml" /home/gai_yk/.local/share/fcitx5/rime/ 2>/dev/null || true
-        fi
-      ''}";
-    };
-  };
-  
   services.openssh = {
     enable = true;
   };
@@ -121,13 +92,17 @@
     pkgs-unstable.zed-editor
     v2raya
     unzip
+    xfce.thunar
+    # XDG Portal (修复 VSCode 文件对话框)
+    xdg-desktop-portal
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-wlr
     # 社交通信应用
     wechat
     qq
     steam
     steam-run
     brightnessctl
-    fcitx5
     # VSCode Wayland 依赖
     libdrm
     mesa
@@ -170,12 +145,23 @@
     enable = true;
   };
 
+  # XDG Portal 服务 (修复文件对话框)
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
+
   # fcitx5 环境变量 (Wayland)
   environment.sessionVariables = {
     GTK_USE_PORTAL = "1";
     # VSCode Wayland 支持
     NIXOS_OZONE_WL = "1";
     ELECTRON_OZONE_PLATFORM_HINT = "auto";
+    GDK_BACKEND = "wayland";
+  };
+  environment.variables = {
+    # 告诉 fcitx5 启动时一定扫描系统级插件目录
+    FCITX_ADDON_DIRS = "/run/current-system/sw/lib/fcitx5";
   };
   
   # 覆盖 fcitx5 的默认 XMODIFIERS 设置

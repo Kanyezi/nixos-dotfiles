@@ -48,8 +48,8 @@ spawn-at-startup "steam" "-system-composer"
 spawn-at-startup "linuxqq"
 
 environment {
-    GTK_IM_MODULE "fcitx"
-    QT_IM_MODULE "fcitx"
+    GTK_IM_MODULE "fcitx5"
+    QT_IM_MODULE "fcitx5"
     XMODIFIERS "@im=fcitx5"
     GTK_THEME "Adwaita:dark"
 }
