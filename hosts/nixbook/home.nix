@@ -89,5 +89,15 @@
   # home.sessionVariables.DISPLAY = ":0";
   home.sessionVariables = {
     DISPLAY = ":0";
+    # fcitx5 输入法环境变量
+    GTK_IM_MODULE = "fcitx5";
+    QT_IM_MODULE = "fcitx5";
+    XMODIFIERS = "@im=fcitx5";
+  };
+
+  # Niri 窗口管理器配置
+  xdg.configFile."niri/config.kdl" = {
+    text = builtins.readFile (self + "/config/niri.kdl");
+    force = true;
   };
 }
