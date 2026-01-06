@@ -1,55 +1,93 @@
+# ==============================================================================
+# Home Manager 用户配置文件
+# ==============================================================================
+# Home Manager 用于管理用户级别的配置，与系统级配置（configuration.nix）分离。
+# 本文件配置用户 gai_yk 的个人环境，包括：
+# - 用户级软件包
+# - Shell 配置（Zsh）
+# - Git 配置
+# - Vim 配置
+# - 输入法和 Xwayland 服务
+# - 环境变量
+# ==============================================================================
+
 { config, pkgs, self,... }:
 
 {
-  # Home-Manager 版本号要与 flake 对应
+  # ==============================================================================
+  # 1. Home Manager 基础配置
+  # ==============================================================================
+  
+  # Home Manager 版本号（要与 flake.nix 中的版本对应）
   home.stateVersion = "25.11";
-
+  
+  # 启用 Home Manager
   programs.home-manager.enable = true;
 
-  # --- 用户级包 --------------------------------------------------------------
+  # ==============================================================================
+  # 2. 用户级软件包
+  # ==============================================================================
+  # 这些包只安装在用户环境中，不影响其他用户
+  
   home.packages = with pkgs; [
-    fcitx5-rime
-    fcitx5-gtk
-    pkgs.qt6Packages.fcitx5-chinese-addons
-    xwayland
-    zoxide
+    # --- 输入法相关 ---
+    fcitx5-rime                      # Rime 中州韵输入法引擎
+    fcitx5-gtk                       # GTK 应用输入法支持
+    pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持
+    
+    # --- X11 兼容层 ---
+    xwayland                         # Xwayland（在 Wayland 中运行 X11 应用）
+    
+    # --- 目录导航工具 ---
+    zoxide                           # 智能目录跳转工具（比 cd 更智能）
   ];
 
-  # --- Shell -----------------------------------------------------------------
+  # ==============================================================================
+  # 3. Shell 配置（Zsh）
+  # ==============================================================================
+  
   programs.zsh = {
-    enable = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    initContent = ''
-      eval "$(zoxide init zsh)"
+    enable = true;                    # 启用 Zsh
+    autosuggestion.enable = true;     # 启用命令自动建议
+    syntaxHighlighting.enable = true; # 启用语法高亮
+    initContent = ''                  # 初始化脚本
+      eval "$(zoxide init zsh)"       # 初始化 zoxide
     '';
   };
 
-  # --- Git -------------------------------------------------------------------
+  # ==============================================================================
+  # 4. Git 配置
+  # ==============================================================================
+  
   programs.git = {
-    enable = true;
-    # 旧：userName / userEmail / extraConfig
-    # 新：
+    enable = true;                    # 启用 Git
     settings = {
       user = {
-        name = "gai_yk";    # 旧 userName
-        email = "1214241948@qq.com";  # 旧 userEmail
+        name = "gai_yk";              # 用户名
+        email = "1214241948@qq.com";  # 邮箱
       };
-      init.defaultBranch = "main";
-      core.editor = "vim";
+      init.defaultBranch = "main";    # 默认分支名
+      core.editor = "vim";            # 默认编辑器
     };
   };
 
-  # --- Vim -------------------------------------------------------------------
+  # ==============================================================================
+  # 5. Vim 配置
+  # ==============================================================================
+  
   programs.vim = {
-    enable = true;
+    enable = true;                    # 启用 Vim
     settings = {
-      number = true;
-      mouse  = "a";
+      number = true;                  # 显示行号
+      mouse  = "a";                   # 启用鼠标支持
     };
   };
 
-   # fcitx5 服务
+  # ==============================================================================
+  # 6. 系统服务配置（用户级）
+  # ==============================================================================
+  
+  # --- fcitx5 输入法服务 ---
   systemd.user.services.fcitx5 = {
     Unit = {
       Description = "Fcitx5 Input Method";
@@ -69,6 +107,7 @@
     };
   };
 
+  # --- Xwayland 服务（Niri 兼容层）---
   systemd.user.services.xwayland = {
     Unit = {
       Description = "Xwayland for niri";
@@ -87,21 +126,29 @@
     };
   };
 
-  # 设置 DISPLAY 变量
-  # home.sessionVariables.DISPLAY = ":0";
+  # ==============================================================================
+  # 7. 环境变量配置
+  # ==============================================================================
+  
   home.sessionVariables = {
-    DISPLAY = ":0";
-    # fcitx5 输入法环境变量 (Wayland)
-    INPUT_METHOD = "fcitx5";
-    GTK_IM_MODULE = "fcitx5";
-    QT_IM_MODULE = "fcitx5";
-    XMODIFIERS = "@im=fcitx5";
-    WAYLAND_DISPLAY = "wayland-1";
-    SDL_IM_MODULE = "fcitx5";
-    GLFW_IM_MODULE = "ibus";
+    # --- 显示相关 ---
+    DISPLAY = ":0";                   # X11 显示变量
+    WAYLAND_DISPLAY = "wayland-1";    # Wayland 显示变量
+    
+    # --- fcitx5 输入法环境变量（Wayland）---
+    INPUT_METHOD = "fcitx5";          # 输入法类型
+    GTK_IM_MODULE = "fcitx5";         # GTK 应用输入法模块
+    QT_IM_MODULE = "fcitx5";          # Qt 应用输入法模块
+    XMODIFIERS = "@im=fcitx5";        # X11 输入法修饰符
+    SDL_IM_MODULE = "fcitx5";         # SDL 应用输入法模块
+    GLFW_IM_MODULE = "ibus";          # GLFW 应用输入法模块（使用 ibus）
   };
 
-  # Niri 窗口管理器配置
+  # ==============================================================================
+  # 8. Niri 窗口管理器配置
+  # ==============================================================================
+  
+  # 从外部文件导入 Niri 配置
   xdg.configFile."niri/config.kdl" = {
     text = builtins.readFile (self + "/config/niri.kdl");
     force = true;
