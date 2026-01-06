@@ -37,7 +37,7 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  
+
 
   programs.niri.enable = true;
   environment.etc."niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
@@ -48,7 +48,7 @@
 
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";
-  
+
   services.pipewire = {
      enable = true;
      pulse.enable = true;
@@ -81,8 +81,8 @@
       tree
     ];
   };
-  
-  
+
+
   services.openssh = {
     enable = true;
   };
@@ -94,7 +94,6 @@
     vim
     wget
     git
-    niri
     fuzzel
     zsh
     kitty
@@ -131,6 +130,17 @@
     vulkan-tools
     xdg-desktop-portal-wlr
     libsecret
+    # Niri 周边工具
+    xwayland-satellite
+    mako
+    swaybg
+    swaylock
+    swayidle
+
+    nixd
+    steam
+    wechat
+    qq
   ];
 
   # 6. 服务
@@ -160,7 +170,7 @@
     # fcitx5 输入法支持
     INPUT_METHOD = "fcitx5";
   };
-  
+
   # 覆盖 fcitx5 的默认 XMODIFIERS 设置
   environment.variables = {
     XMODIFIERS = lib.mkForce "@im=fcitx5";
@@ -191,4 +201,3 @@
     dejavu_fonts
   ];
 }
-

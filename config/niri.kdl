@@ -39,13 +39,7 @@ window-rule {
     match app-id="wechat"
     open-on-workspace "wechat"
 }
-
-spawn-at-startup "zen-browser"
 spawn-at-startup "fcitx5"
-spawn-at-startup "qqmusic"
-spawn-at-startup "discord"
-spawn-at-startup "steam" "-system-composer"
-spawn-at-startup "linuxqq"
 
 environment {
     GTK_IM_MODULE "fcitx5"
