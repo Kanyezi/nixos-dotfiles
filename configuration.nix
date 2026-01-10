@@ -21,13 +21,13 @@
   # ==============================================================================
   # 1. 基础系统配置
   # ==============================================================================
-  
+
   # 导入硬件配置文件（自动生成，包含磁盘、内核模块等硬件信息）
   imports = [./hardware-configuration.nix];
-  
+
   # NixOS 系统版本号（不要修改，用于追踪配置变更）
   system.stateVersion = "25.11";
-  
+
   # 系统引导配置
   boot.loader.systemd-boot.enable = true;    # 启用 systemd-boot 引导加载器
   boot.loader.efi.canTouchEfiVariables = true;  # 允许修改 EFI 变量
@@ -35,16 +35,16 @@
   # ==============================================================================
   # 2. 网络和国际化配置
   # ==============================================================================
-  
+
   # 主机名
   networking.hostName = "Kanyezi";
-  
+
   # 时区设置
   time.timeZone = "Asia/Shanghai";
-  
+
   # 默认语言环境
   i18n.defaultLocale = "en_US.UTF-8";
-  
+
   # 输入法配置（fcitx5 + Rime）
   i18n.inputMethod = {
     type = "fcitx5";  # 使用 fcitx5 输入法框架
@@ -62,7 +62,7 @@
   # ==============================================================================
   # 3. 硬件配置
   # ==============================================================================
-  
+
   # OpenGL/Vulkan 图形支持（Zed 编辑器和 Steam 等应用依赖）
   hardware.opengl = {
     enable = true;           # 启用 OpenGL 支持
@@ -76,10 +76,10 @@
   # ==============================================================================
   # 4. 桌面环境配置（Niri Wayland 窗口管理器）
   # ==============================================================================
-  
+
   # 启用 Niri 窗口管理器（基于 Wayland 的动态平铺窗口管理器）
   programs.niri.enable = true;
-  
+
   # 从外部文件导入 Niri 配置
   environment.etc."niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
 
@@ -118,7 +118,7 @@
   # ==============================================================================
   # 5. 用户账户配置
   # ==============================================================================
-  
+
   # 定义用户账户
   users.users.gai_yk = {
      isNormalUser = true;              # 普通用户
@@ -131,7 +131,7 @@
   # ==============================================================================
   # 6. 系统服务配置
   # ==============================================================================
-  
+
   # SSH 服务（远程登录）
   services.openssh = {
     enable = true;
@@ -160,10 +160,10 @@
   # ==============================================================================
   # 7. 系统软件包
   # ==============================================================================
-  
+
   # 启用 nix-ld（允许运行未链接的预编译二进制文件）
   programs.nix-ld.enable = true;
-  
+
   # 系统级软件包列表
   environment.systemPackages = with pkgs; [
     # --- 基础工具 ---
@@ -172,29 +172,30 @@
     git                     # 分布式版本控制系统
     tree                    # 目录树显示工具
     unzip                   # ZIP 压缩文件解压工具
-    
+
     # --- Shell 和终端 ---
     zsh                     # Zsh 交互式 Shell
     kitty                   # GPU 加速的终端模拟器
     alacritty               # 现代 GPU 终端模拟器
-    
+
     # --- 浏览器 ---
     firefox                 # Firefox 网页浏览器
-    
+
     # --- 代码编辑器 ---
     vscode                  # Visual Studio Code 代码编辑器
     pkgs-unstable.zed-editor  # Zed 高性能代码编辑器（来自 unstable 通道）
     nixd                    # Nix 语言服务器（提供 Nix 代码补全和诊断）
-    
+    emacs
+
     # --- 应用启动器 ---
     fuzzel                  # Wayland 应用启动器
-    
+
     # --- 系统控制工具 ---
     brightnessctl           # 屏幕亮度控制工具
-    
+
     # --- 网络代理 ---
     v2raya                  # V2Ray Web 管理界面
-    
+
     # --- VSCode Wayland 依赖库 ---
     libdrm                  # Direct Rendering Manager 库
     mesa                    # OpenGL/Vulkan 驱动
@@ -204,30 +205,30 @@
     gtk3                    # GTK3 图形工具库
     at-spi2-atk             # 辅助功能支持库
     libxkbcommon            # XKB 键盘布局库
-    
+
     # --- Noctalia Shell 相关 ---
     inputs.noctalia.packages.${config.nixpkgs.system}.default  # Noctalia Shell 桌面环境
     adwaita-icon-theme      # Adwaita 图标主题（GNOME 默认）
     papirus-icon-theme      # Papirus 图标主题
     hicolor-icon-theme      # 基础图标主题
-    
+
     # --- Zed 编辑器依赖 ---
     vulkan-tools            # Vulkan 工具集
     xdg-desktop-portal-wlr  # Wayland 桌面门户
     libsecret               # 密钥存储库
-    
+
     # --- Niri 窗口管理器周边工具 ---
     xwayland-satellite      # Xwayland 桥接工具（运行 X11 应用）
     mako                    # Wayland 通知守护进程
     swaybg                  # Wayland 背景设置工具
     swaylock                # Wayland 屏幕锁定工具
     swayidle                # Wayland 空闲管理工具
-    
+
     # --- 游戏和娱乐 ---
     steam                   # Steam 游戏平台
     wechat                  # 微信客户端
     qq                      # QQ 客户端
-    
+
     # --- 自定义脚本 ---
     (pkgs.writeShellScriptBin "iflow" ''
       #!/run/current-system/sw/bin/bash
@@ -239,7 +240,7 @@
   # ==============================================================================
   # 8. 环境变量配置
   # ==============================================================================
-  
+
   # 会话环境变量
   environment.sessionVariables = {
     GTK_USE_PORTAL = "1";   # 使用 Portal 进行文件选择等操作
@@ -258,10 +259,10 @@
   # ==============================================================================
   # 9. Nix 包管理器配置
   # ==============================================================================
-  
+
   # 允许安装非自由软件（如 Steam、VSCode 等）
   nixpkgs.config.allowUnfree = true;
-  
+
   # Nix 设置
   nix.settings = {
      # 使用清华大学镜像源加速包下载
@@ -275,7 +276,7 @@
   # ==============================================================================
   # 10. 防火墙配置
   # ==============================================================================
-  
+
   networking.firewall.enable = true;  # 启用防火墙
   # 开放 TCP 端口：22（SSH）、2017（自定义服务）
   networking.firewall.allowedTCPPorts = [ 22 2017 ];
@@ -283,7 +284,7 @@
   # ==============================================================================
   # 11. 字体配置
   # ==============================================================================
-  
+
   # 安装系统字体（修复 VSCode 等应用启动问题）
   fonts.packages = with pkgs; [
     noto-fonts              # Noto 基础字体
