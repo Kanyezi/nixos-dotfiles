@@ -45,15 +45,14 @@
   # 默认语言环境
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # 输入法配置（fcitx5 + Rime）
+  # 输入法配置（fcitx5 + 拼音）
   i18n.inputMethod = {
     type = "fcitx5";  # 使用 fcitx5 输入法框架
     enable = true;
     fcitx5.addons = with pkgs; [
-      fcitx5-rime                      # Rime 中州韵输入法引擎
       fcitx5-gtk                       # GTK 应用输入法支持
       pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
-      pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持
+      pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持（包含拼音）
     ];
   };
 
@@ -208,10 +207,9 @@
     hicolor-icon-theme      # 基础图标主题
 
     # --- 输入法相关 ---
-    fcitx5-rime                      # Rime 中州韵输入法引擎
     fcitx5-gtk                       # GTK 应用输入法支持
     pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
-    pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持
+    pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持（包含拼音）
 
     # --- X11 兼容层 ---
     xwayland                         # Xwayland（在 Wayland 中运行 X11 应用）
@@ -262,13 +260,9 @@
 
     # --- 输入法（fcitx5）---
     INPUT_METHOD = "fcitx5";
-    GTK_IM_MODULE = lib.mkForce "fcitx5";         # GTK 应用输入法模块（覆盖 fcitx5 模块默认值）
-    QT_IM_MODULE = lib.mkForce "fcitx5";          # Qt 应用输入法模块（覆盖 fcitx5 模块默认值）
-    XMODIFIERS = lib.mkForce "@im=fcitx5";        # X11 输入法修饰符（覆盖 fcitx5 模块默认值）
     SDL_IM_MODULE = "fcitx5";         # SDL 应用输入法模块
     GLFW_IM_MODULE = "ibus";          # GLFW 应用输入法模块
     QT_QPA_PLATFORM = "wayland";      # Qt 应用使用 Wayland 平台
-    GTK_IM_MODULE_FILE = "/run/current-system/sw/lib/gtk-3.0/3.0.0/immodules.cache";  # GTK3 输入法模块缓存文件
 
     # --- 显示相关 ---
     DISPLAY = ":0";                   # X11 显示变量

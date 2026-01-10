@@ -18,6 +18,9 @@ tramp/
 # Emacs native compiled cache
 eln-cache/
 
+# Emacs package manager
+elpa/
+
 # Emacs other caches
 *.elc
 ede-files/

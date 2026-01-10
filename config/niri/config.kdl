@@ -39,7 +39,7 @@ window-rule {
     match app-id="wechat"
     open-on-workspace "wechat"
 }
-spawn-at-startup "fcitx5"
+spawn-at-startup "sh" "-c" "pkill fcitx5 && fcitx5 -d"
 
 environment {
     GTK_IM_MODULE "fcitx5"
