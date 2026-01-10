@@ -80,12 +80,6 @@
   # 启用 Niri 窗口管理器（基于 Wayland 的动态平铺窗口管理器）
   programs.niri.enable = true;
 
-  # 从外部文件导入 Niri 配置
-  environment.etc."niri/config.kdl".text = builtins.readFile ./config/niri.kdl;
-
-  # 从外部文件导入 Kitty 终端配置
-  environment.etc."xdg/kitty/kitty.conf".text = builtins.readFile ./config/kitty.conf;
-
   # X11 服务器配置（用于运行 Xwayland 兼容 X11 应用）
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";  # 键盘布局
@@ -249,6 +243,9 @@
     ELECTRON_OZONE_PLATFORM_HINT = "auto";  # Electron 自动选择平台
     # fcitx5 输入法支持
     INPUT_METHOD = "fcitx5";
+    # Electron 应用输入法支持
+    ELECTRON_ENABLE_LOGGING = "1";          # 启用 Electron 日志
+    ELECTRON_ENABLE_STACK_DUMPING = "1";    # 启用堆栈转储
   };
 
   # 覆盖 fcitx5 的默认 XMODIFIERS 设置
