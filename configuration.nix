@@ -52,6 +52,7 @@
     fcitx5.addons = with pkgs; [
       fcitx5-rime                      # Rime 中州韵输入法引擎
       fcitx5-gtk                       # GTK 应用输入法支持
+      pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
       pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持
     ];
   };
@@ -64,9 +65,9 @@
   # ==============================================================================
 
   # OpenGL/Vulkan 图形支持（Zed 编辑器和 Steam 等应用依赖）
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;           # 启用 OpenGL 支持
-    driSupport32Bit = true;  # 启用 32 位 DRI 支持（运行 32 位游戏需要）
+    enable32Bit = true;      # 启用 32 位 DRI 支持（运行 32 位游戏需要）
   };
 
   # 网络代理配置（如需要可取消注释）
@@ -206,6 +207,21 @@
     papirus-icon-theme      # Papirus 图标主题
     hicolor-icon-theme      # 基础图标主题
 
+    # --- 输入法相关 ---
+    fcitx5-rime                      # Rime 中州韵输入法引擎
+    fcitx5-gtk                       # GTK 应用输入法支持
+    pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
+    pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持
+
+    # --- X11 兼容层 ---
+    xwayland                         # Xwayland（在 Wayland 中运行 X11 应用）
+
+    # --- 目录导航工具 ---
+    zoxide                           # 智能目录跳转工具（比 cd 更智能）
+
+    # --- C++ 开发工具 ---
+    clang-tools                      # C++ 语言服务器 (LSP) 和开发工具
+
     # --- Zed 编辑器依赖 ---
     vulkan-tools            # Vulkan 工具集
     xdg-desktop-portal-wlr  # Wayland 桌面门户
@@ -235,22 +251,32 @@
   # 8. 环境变量配置
   # ==============================================================================
 
-  # 会话环境变量
-  environment.sessionVariables = {
-    GTK_USE_PORTAL = "1";   # 使用 Portal 进行文件选择等操作
-    # VSCode Wayland 支持
-    NIXOS_OZONE_WL = "1";   # 启用 Electron Wayland 支持
-    ELECTRON_OZONE_PLATFORM_HINT = "auto";  # Electron 自动选择平台
-    # fcitx5 输入法支持
-    INPUT_METHOD = "fcitx5";
-    # Electron 应用输入法支持
-    ELECTRON_ENABLE_LOGGING = "1";          # 启用 Electron 日志
-    ELECTRON_ENABLE_STACK_DUMPING = "1";    # 启用堆栈转储
-  };
-
-  # 覆盖 fcitx5 的默认 XMODIFIERS 设置
+  # 环境变量
   environment.variables = {
-    XMODIFIERS = lib.mkForce "@im=fcitx5";  # 强制设置输入法修饰符
+    # --- 桌面门户 ---
+    GTK_USE_PORTAL = "1";   # 使用 Portal 进行文件选择等操作
+
+    # --- Electron/Wayland 支持 ---
+    NIXOS_OZONE_WL = "0";   # 禁用 Electron Wayland 支持，强制使用 X11
+    ELECTRON_OZONE_PLATFORM_HINT = "x11";  # 强制 Electron 使用 X11 平台（支持 fcitx5）
+
+    # --- 输入法（fcitx5）---
+    INPUT_METHOD = "fcitx5";
+    GTK_IM_MODULE = lib.mkForce "fcitx5";         # GTK 应用输入法模块（覆盖 fcitx5 模块默认值）
+    QT_IM_MODULE = lib.mkForce "fcitx5";          # Qt 应用输入法模块（覆盖 fcitx5 模块默认值）
+    XMODIFIERS = lib.mkForce "@im=fcitx5";        # X11 输入法修饰符（覆盖 fcitx5 模块默认值）
+    SDL_IM_MODULE = "fcitx5";         # SDL 应用输入法模块
+    GLFW_IM_MODULE = "ibus";          # GLFW 应用输入法模块
+    QT_QPA_PLATFORM = "wayland";      # Qt 应用使用 Wayland 平台
+    GTK_IM_MODULE_FILE = "/run/current-system/sw/lib/gtk-3.0/3.0.0/immodules.cache";  # GTK3 输入法模块缓存文件
+
+    # --- 显示相关 ---
+    DISPLAY = ":0";                   # X11 显示变量
+    WAYLAND_DISPLAY = "wayland-1";    # Wayland 显示变量
+
+    # --- Electron 调试（可选）---
+    ELECTRON_ENABLE_LOGGING = "1";   # 启用 Electron 日志
+    ELECTRON_ENABLE_STACK_DUMPING = "1";  # 启用堆栈转储
   };
 
   # ==============================================================================
