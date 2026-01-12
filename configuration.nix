@@ -219,6 +219,16 @@
 
     # --- C++ 开发工具 ---
     clang-tools                      # C++ 语言服务器 (LSP) 和开发工具
+    gcc
+    gnumake
+    cmake
+    pkg-config
+
+    # --- Rust 开发工具 ---
+    rustc
+    cargo
+    rustfmt
+    clippy
 
     # --- Zed 编辑器依赖 ---
     vulkan-tools            # Vulkan 工具集

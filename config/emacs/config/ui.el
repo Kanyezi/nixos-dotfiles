@@ -12,3 +12,6 @@
 
 ;;禁用底部横栏
 (setq-default mode-line-format nil)
+
+;;禁用左右留白（fringe）
+(set-fringe-mode 0)
