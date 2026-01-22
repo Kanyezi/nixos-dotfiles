@@ -1,0 +1,30 @@
+# Emacs temporary files
+*~
+\#*\#/
+.\#*
+
+# Emacs auto-save files
+*.elc
+auto-save-list/
+tramp/
+
+# Emacs backup files
+*.bak
+*~
+
+# Emacs lock files
+.\#*
+
+# Emacs native compiled cache
+eln-cache/
+
+# Emacs package manager
+elpa/
+
+# Emacs other caches
+*.elc
+ede-files/
+project-ede-files/
+
+# Emacs persistent storage
+etc/
