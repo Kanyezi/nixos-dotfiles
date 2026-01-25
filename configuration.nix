@@ -28,6 +28,9 @@
   # NixOS 系统版本号（不要修改，用于追踪配置变更）
   system.stateVersion = "25.11";
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;   # 最新稳定，含 ntsync 内核支持
+  boot.kernelModules = [ "ntsync" ];
+
   # 系统引导配置
   boot.loader.systemd-boot.enable = true;    # 启用 systemd-boot 引导加载器
   boot.loader.efi.canTouchEfiVariables = true;  # 允许修改 EFI 变量
@@ -141,6 +144,7 @@
   # 电源管理服务（修复 Noctalia Shell UPower 警告）
   services.upower.enable = true;              # 电源管理守护进程
   services.power-profiles-daemon.enable = true;  # 电源配置文件守护进程
+  services.flatpak.enable = true;
 
   # v2rayA 代理服务（Web 界面管理 V2Ray）
   services.v2raya = {
@@ -251,6 +255,9 @@
     steam                   # Steam 游戏平台
     wechat                  # 微信客户端
     qq                      # QQ 客户端
+    pkgs.lutris
+    pkgs.wineWowPackages.wayland
+    steam-run
 
     # --- 自定义脚本 ---
     (pkgs.writeShellScriptBin "iflow" ''
