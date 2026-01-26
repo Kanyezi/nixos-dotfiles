@@ -182,6 +182,7 @@
 
     # --- 浏览器 ---
     firefox                 # Firefox 网页浏览器
+    pkgs.google-chrome
 
     # --- 代码编辑器 ---
     vscode                  # Visual Studio Code 代码编辑器
