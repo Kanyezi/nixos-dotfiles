@@ -182,7 +182,7 @@
 
     # --- 浏览器 ---
     firefox                 # Firefox 网页浏览器
-    google-chrome-stable       # Google Chrome 网页浏览器（稳定版）
+    google-chrome            # Google Chrome
     pkgs.chromium            # Chromium 开源浏览器（Google Chrome 的基础）
 
     # --- 代码编辑器 ---
