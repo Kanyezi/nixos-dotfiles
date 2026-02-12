@@ -184,6 +184,7 @@
     firefox                 # Firefox 网页浏览器
     google-chrome            # Google Chrome
     pkgs.chromium            # Chromium 开源浏览器（Google Chrome 的基础）
+    vlc
 
     # --- 代码编辑器 ---
     vscode                  # Visual Studio Code 代码编辑器
@@ -244,6 +245,8 @@
     rustfmt
     clippy
 
+    python315
+
     # --- Zed 编辑器依赖 ---
     vulkan-tools            # Vulkan 工具集
     xdg-desktop-portal-wlr  # Wayland 桌面门户
@@ -258,7 +261,7 @@
 
     # --- 游戏和娱乐 ---
     steam                   # Steam 游戏平台
-    wechat                  # 微信客户端
+    #wechat                  # 微信客户端
     qq                      # QQ 客户端
     pkgs.lutris
     pkgs.wineWowPackages.wayland
