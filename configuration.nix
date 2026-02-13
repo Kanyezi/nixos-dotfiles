@@ -171,7 +171,6 @@
     git                     # 分布式版本控制系统
     tree                    # 目录树显示工具
     unzip                   # ZIP 压缩文件解压工具
-    unclutter-xfixes       # 隐藏鼠标指针（适用于触控设备）
 
     pkgs.wpsoffice-cn
     pkgs.localsend

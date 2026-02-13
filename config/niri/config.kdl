@@ -40,7 +40,7 @@ window-rule {
     open-on-workspace "wechat"
 }
 spawn-at-startup "sh" "-c" "pkill fcitx5 && fcitx5 -d"
-spawn-at-startup "unclutter-xfixes" "-idle" "2" "-root"
+
 environment {
     GTK_IM_MODULE "fcitx5"
     QT_IM_MODULE "fcitx5"
@@ -64,6 +64,14 @@ input {
 output "eDP-1" {
     // Enable if needed
     scale 1
+}
+
+cursor {
+    // 鼠标静止 3 秒后自动隐藏（单位：毫秒）
+    hide-after-inactive-ms 3000
+    
+    // 或者/同时启用：打字时隐藏鼠标
+    hide-when-typing
 }
 
 layout {
