@@ -40,7 +40,7 @@ window-rule {
     open-on-workspace "wechat"
 }
 spawn-at-startup "sh" "-c" "pkill fcitx5 && fcitx5 -d"
-
+spawn-at-startup "unclutter-xfixes" "-idle" "2" "-root"
 environment {
     GTK_IM_MODULE "fcitx5"
     QT_IM_MODULE "fcitx5"

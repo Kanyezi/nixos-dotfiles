@@ -1,0 +1,27 @@
+{
+  "todo": {
+    "prefix": "todo",
+    "body": ["TODO: $0"],
+    "description": "TODO 注释"
+  },
+  "fixme": {
+    "prefix": "fixme",
+    "body": ["FIXME: $0"],
+    "description": "FIXME 注释"
+  },
+  "note": {
+    "prefix": "note",
+    "body": ["NOTE: $0"],
+    "description": "NOTE 注释"
+  },
+  "date": {
+    "prefix": "date",
+    "body": ["${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}"],
+    "description": "当前日期"
+  },
+  "time": {
+    "prefix": "time",
+    "body": ["${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}"],
+    "description": "当前时间"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "python_main": {
+    "prefix": "main",
+    "body": ["def main():", "\t$0", "", "if __name__ == \"__main__\":", "\tmain()"],
+    "description": "Python main 函数"
+  },
+  "python_def": {
+    "prefix": "def",
+    "body": ["def ${1:name}(${2:args}):", "\t$0"],
+    "description": "Python 函数定义"
+  },
+  "python_class": {
+    "prefix": "class",
+    "body": ["class ${1:Name}:", "\tdef __init__(self${2:, args}):", "\t\t$0"],
+    "description": "Python 类定义"
+  },
+  "python_if": {
+    "prefix": "if",
+    "body": ["if ${1:condition}:", "\t$0"],
+    "description": "Python if 语句"
+  },
+  "python_for": {
+    "prefix": "for",
+    "body": ["for ${1:item} in ${2:iterable}:", "\t$0"],
+    "description": "Python for 循环"
+  },
+  "python_try": {
+    "prefix": "try",
+    "body": ["try:", "\t$1", "except ${2:Exception} as e:", "\t$0"],
+    "description": "Python try except"
+  }
+}

@@ -98,6 +98,10 @@
       # 链接 fcitx5 配置文件夹
       rm -rf ~/.config/fcitx5
       ln -sf ~/dotfiles/config/fcitx5 ~/.config/fcitx5
+
+      # 链接 nvim 配置文件夹
+      rm -rf ~/.config/nvim
+      ln -sf ~/dotfiles/config/nvim ~/.config/nvim
     '';
   };
 }
