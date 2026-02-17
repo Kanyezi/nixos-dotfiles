@@ -1,3 +1,6 @@
+;; Set straight.el base directory (packages will be installed here)
+(setq straight-base-dir "~/.cache/emacs")
+
 ;; Straight.el bootstrap
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -44,6 +47,9 @@
 ;; Install magit for git management
 (straight-use-package 'magit)
 
+;; Set transient history file location (used by magit)
+(setq transient-history-file (expand-file-name "transient/history.el" "~/.cache/emacs/"))
+
 ;; Configure magit
 (with-eval-after-load 'magit
   (setq magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
@@ -89,7 +95,7 @@
         treemacs-no-png-images                   nil
         treemacs-no-delete-other-windows         t
         treemacs-project-follow-cleanup          nil
-        treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+        treemacs-persist-file                    (expand-file-name "treemacs-persist" "~/.cache/emacs/")
         treemacs-position                        'left
         treemacs-read-string-input               'from-child-frame
         treemacs-recenter-distance               0.1
