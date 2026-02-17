@@ -28,3 +28,5 @@ project-ede-files/
 
 # Emacs persistent storage
 etc/
+
+config/emacs/straight

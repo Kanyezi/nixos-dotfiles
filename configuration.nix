@@ -156,6 +156,12 @@
     enable = true;
   };
 
+  # MariaDB 数据库服务
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  };
+
   # ==============================================================================
   # 7. 系统软件包
   # ==============================================================================
@@ -171,6 +177,8 @@
     git                     # 分布式版本控制系统
     tree                    # 目录树显示工具
     unzip                   # ZIP 压缩文件解压工具
+    jdk21
+    mariadb-connector-java  # MariaDB JDBC 驱动
 
     pkgs.wpsoffice-cn
     pkgs.localsend
@@ -319,8 +327,8 @@
   # ==============================================================================
 
   networking.firewall.enable = true;  # 启用防火墙
-  # 开放 TCP 端口：22（SSH）、2017（自定义服务）
-  networking.firewall.allowedTCPPorts = [ 22 2017 ];
+  # 开放 TCP 端口：22（SSH）、2017（自定义服务）、3306（MySQL）
+  networking.firewall.allowedTCPPorts = [ 22 2017 3306 ];
 
   # ==============================================================================
   # 11. 字体配置
