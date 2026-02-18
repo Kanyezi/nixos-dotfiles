@@ -1,0 +1,10 @@
+CompileFlags:
+  Add:
+    - -stdlib=libstdc++
+    - -I/nix/store/yps9cjmi8g58mh0f7pw902br7gxwg2dz-gcc-14.3.0/include/c++/14.3.0/
+    - -I/nix/store/yps9cjmi8g58mh0f7pw902br7gxwg2dz-gcc-14.3.0/include/c++/14.3.0//x86_64-unknown-linux-gnu
+    - -I/nix/store/yps9cjmi8g58mh0f7pw902br7gxwg2dz-gcc-14.3.0/include/c++/14.3.0//backward
+    - -I/nix/store/yps9cjmi8g58mh0f7pw902br7gxwg2dz-gcc-14.3.0/lib/gcc/x86_64-unknown-linux-gnu/14.3.0/include
+    - -I/nix/store/1k8f0lkj10gsbb1fh0idr1423l37yj69-glibc-2.40-218-dev/include
+    - -std=c++17
+  Compiler: g++
