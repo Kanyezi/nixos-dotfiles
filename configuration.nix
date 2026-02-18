@@ -244,6 +244,7 @@
     pkg-config
     zenity
     jq
+    jdt-language-server
     nss.tools
 
     # --- Rust 开发工具 ---

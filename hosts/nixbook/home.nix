@@ -102,6 +102,10 @@
       # 链接 nvim 配置文件夹
       rm -rf ~/.config/nvim
       ln -sf ~/dotfiles/config/nvim ~/.config/nvim
+
+      # 链接 clangd 配置文件夹
+      rm -rf ~/.config/clangd
+      ln -sf ~/dotfiles/config/clangd ~/.config/clangd
     '';
   };
 }
