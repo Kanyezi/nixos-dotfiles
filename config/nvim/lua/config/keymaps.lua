@@ -44,6 +44,8 @@ keymap.set("n", "<Esc>", ":noh<CR>", opts)
 keymap.set("n", "<leader>t", ":terminal<CR>", { desc = "打开终端" })
 keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 
+-- 文件树快捷键已在 nvim-tree.lua 中配置
+
 -- LSP 快捷键（LspAttach 时生效）
 vim.api.nvim_create_autocmd("LspAttach", {
   group = vim.api.nvim_create_augroup("LspKeymaps", {}),

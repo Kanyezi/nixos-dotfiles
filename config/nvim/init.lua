@@ -18,11 +18,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- 加载核心配置
-require("config.options")
-require("config.keymaps")
-require("config.autocmds")
-require("config.functions")
 
 -- 加载插件
 require("lazy").setup("plugins", {
@@ -41,3 +36,9 @@ require("lazy").setup("plugins", {
     },
   },
 })
+
+-- 加载核心配置
+require("config.options")
+require("config.keymaps")
+require("config.autocmds")
+require("config.functions")
