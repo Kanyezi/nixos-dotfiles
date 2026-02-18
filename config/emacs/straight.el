@@ -22,10 +22,13 @@
 (straight-use-package 'evil)
 (evil-mode 1)
 
+;; Install general.el for keybindings (must be after evil)
+(straight-use-package 'general)
+
 ;; Configure evil
 (with-eval-after-load 'evil
   ;; Set evil state for different modes
-  (evil-set-initial-state 'treemacs-mode 'emacs)
+  (evil-set-initial-state 'treemacs-mode 'normal)
   (evil-set-initial-state 'dired-mode 'emacs)
   (evil-set-initial-state 'org-mode 'emacs)
 
@@ -36,7 +39,12 @@
   (setq evil-want-C-w-in-emacs-state t)
 
   ;; Enable evil in minibuffer
-  (setq evil-want-minibuffer t))
+  (setq evil-want-minibuffer t)
+
+  ;; 修复自动缩进问题：确保 insert 模式下自动缩进正常工作
+  (setq evil-auto-indent t)
+  ;; 让 evil 使用 Emacs 的 electric-indent
+  (setq evil-electric-indent t))
 
 ;; Install treemacs using straight.el
 (straight-use-package 'treemacs)
@@ -131,3 +139,76 @@
     (if (executable-find "python3")
         (treemacs-git-mode 'deferred)
       (treemacs-git-mode 'simple))))
+
+;; ============ LSP 配置 (C++ 代码提示) ============
+(straight-use-package 'lsp-mode)
+(straight-use-package 'lsp-ui)
+(straight-use-package 'company)
+
+;; company 自动补全配置
+(with-eval-after-load 'company
+  (setq company-idle-delay 0.1           ; 更快弹出
+        company-minimum-prefix-length 1  ; 输入1个字符就开始
+        company-show-quick-access t))
+
+;; clangd 参数配置
+(setq lsp-clients-clangd-args '("--background-index"
+                                 "--clang-tidy"
+                                 "--header-insertion=iwyu"
+                                 "--completion-style=detailed"
+                                 "--function-arg-placeholders"
+                                 "--fallback-style=llvm"))
+
+;; lsp-ui 配置
+(setq lsp-ui-doc-enable t
+      lsp-ui-doc-position 'at-point
+      lsp-ui-doc-delay 0.5
+      lsp-ui-sideline-enable t
+      lsp-ui-sideline-show-diagnostics t
+      lsp-headerline-breadcrumb-enable nil
+      lsp-enable-on-type-formatting nil   ; 禁用 LSP 自动格式化
+      lsp-enable-indentation nil)         ; 禁用 LSP 缩进
+
+;; C/C++ 模式自动启动 LSP
+(add-hook 'c++-mode-hook 'lsp)
+(add-hook 'c-mode-hook 'lsp)
+
+;; 启用 company 全局补全
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; ============ Tree-sitter 配置 (语法高亮) ============
+;; Emacs 29+ 内置 tree-sitter，但需要检查是否编译支持
+(when (and (>= emacs-major-version 29) (fboundp 'treesit-ready-p))
+  (setq treesit-language-source-alist
+        '((cpp "https://github.com/tree-sitter/tree-sitter-cpp" "v0.22.0")
+          (c "https://github.com/tree-sitter/tree-sitter-c" "v0.21.0")))
+  
+  ;; 自动安装语法解析器
+  (dolist (lang '(c cpp))
+    (unless (treesit-ready-p lang t)
+      (treesit-install-language-grammar lang)))
+  
+  ;; C++ 模式使用 tree-sitter 高亮
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode)))
+
+;; ============ 自动括号补全 ============
+(electric-pair-mode 1)
+(setq electric-pair-pairs
+      '((?\" . ?\")    ; 双引号
+        (?\' . ?\')    ; 单引号
+        (?\( . ?\))    ; 小括号
+        (?\[ . ?\])    ; 中括号
+        (?\{ . ?\})))  ; 大括号
+
+;; ============ 自动缩进 ============
+(electric-indent-mode 1)
+;; 确保 C/C++ 模式下正确缩进
+(setq c-electric-flag t)
+(add-hook 'c++-mode-hook (lambda () (c-toggle-electric-state 1)))
+(add-hook 'c-mode-hook (lambda () (c-toggle-electric-state 1)))
+
+;; ============ Tab 缩进设置 ============
+(setq-default tab-width 4           ; Tab 显示宽度为 4
+              indent-tabs-mode t)   ; 使用 Tab 字符缩进
+(setq c-basic-offset 4)             ; C/C++ 缩进宽度

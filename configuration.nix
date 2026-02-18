@@ -223,7 +223,6 @@
     # --- Noctalia Shell 相关 ---
     inputs.noctalia.packages.${config.nixpkgs.system}.default  # Noctalia Shell 桌面环境
     adwaita-icon-theme      # Adwaita 图标主题（GNOME 默认）
-    papirus-icon-theme      # Papirus 图标主题
     hicolor-icon-theme      # 基础图标主题
 
     # --- 输入法相关 ---
@@ -314,9 +313,14 @@
 
   # Nix 设置
   nix.settings = {
-     # 使用清华大学镜像源加速包下载
+     # 使用国内镜像源加速包下载
      substituters = [
         "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+        "https://mirror.sjtu.edu.cn/nix-channels/store"
+     ];
+     # 信任的公钥（官方缓存密钥）
+     trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
      ];
      # 启用实验性功能（ flakes 和 nix 命令）
      experimental-features = ["nix-command" "flakes" ];
@@ -343,6 +347,7 @@
     liberation_ttf          # Liberation 字体（替代 Arial/Times）
     fira-code               # Fira Code 等宽字体（带连字符）
     fira-code-symbols       # Fira Code 符号字体
-    dejavu_fonts            # DejaVu 字体（Unicode 覆盖广泛）
+    dejavu_fonts              # DejaVu 字体（Unicode 覆盖广泛）
+    nerd-fonts.jetbrains-mono # JetBrainsMono Nerd Font
   ];
 }
