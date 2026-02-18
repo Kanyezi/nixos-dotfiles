@@ -1,13 +1,14 @@
--- LSP 配置
+-- ~/.config/nvim/lua/plugins/lsp.lua
+
 return {
-  -- Mason - LSP 服务器安装管理
+  -- Mason 用于安装 LSP 服务器
   {
     "williamboman/mason.nvim",
     lazy = false,
     config = true,
   },
 
-  -- 配置 LSP 服务器
+  -- LSP 配置（Neovim 0.11+ 原生方式）
   {
     "neovim/nvim-lspconfig",
     event = "BufReadPre",
@@ -26,11 +27,11 @@ return {
       -- Python
       vim.lsp.config.pyright = {}
 
-      -- C/C++
+      -- C++
       vim.lsp.config.clangd = {}
 
       -- 启用 LSP 服务器
-      vim.lsp.enable("lua_ls", "pyright", "clangd")
+      vim.lsp.enable({ "lua_ls", "pyright", "clangd" })
     end,
   },
 }
