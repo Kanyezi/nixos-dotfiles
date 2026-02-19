@@ -269,7 +269,7 @@
 
     # --- 游戏和娱乐 ---
     steam                   # Steam 游戏平台
-    #wechat                  # 微信客户端
+    wechat-uos              # 微信客户端
     qq                      # QQ 客户端
     pkgs.lutris
     pkgs.wineWowPackages.wayland
