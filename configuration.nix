@@ -323,6 +323,7 @@
      trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
      ];
+     trusted-users = [ "root" "@wheel" "gai_yk" ];
      # 启用实验性功能（ flakes 和 nix 命令）
      experimental-features = ["nix-command" "flakes" ];
   };
