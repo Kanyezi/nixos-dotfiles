@@ -30,3 +30,5 @@ project-ede-files/
 etc/
 
 config/emacs/straight
+
+config/v2raya/bolt.db
