@@ -30,7 +30,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;   # 最新稳定，含 ntsync 内核支持
   boot.kernelModules = [ "ntsync" ];
-
+  
   # 系统引导配置
   boot.loader.systemd-boot.enable = true;    # 启用 systemd-boot 引导加载器
   boot.loader.efi.canTouchEfiVariables = true;  # 允许修改 EFI 变量
@@ -146,11 +146,6 @@
   services.power-profiles-daemon.enable = true;  # 电源配置文件守护进程
   services.flatpak.enable = true;
 
-  # v2rayA 代理服务（Web 界面管理 V2Ray）
-  services.v2raya = {
-    enable = true;
-  };
-
   # Noctalia Shell 服务（自定义桌面 Shell）
   services.noctalia-shell = {
     enable = true;
@@ -160,6 +155,19 @@
   services.mysql = {
     enable = true;
     package = pkgs.mariadb;
+  };
+
+  # v2rayA 服务（V2Ray Web 客户端）
+  services.v2raya = {
+    enable = true;
+    package = pkgs.v2raya;
+  };
+
+  # v2rayA systemd 服务配置
+  systemd.services.v2raya = {
+    serviceConfig = {
+      Environment = "V2RAYA_CONFIG=/home/gai_yk/.config/v2raya";
+    };
   };
 
   # ==============================================================================
@@ -306,7 +314,17 @@
   };
 
   # ==============================================================================
-  # 9. Nix 包管理器配置
+  # 10. 防火墙配置
+  # ==============================================================================
+
+  networking.firewall.enable = true;  # 启用防火墙
+  # 开放 TCP 端口：22（SSH）、3306（MySQL）
+  # v2raya 端口：20170（SOCKS5 代理）、20171（HTTP 代理）、20172（Web UI 管理面板）
+  networking.firewall.allowedTCPPorts = [ 22 3306 20170 20171 20172 ];
+  networking.firewall.allowedUDPPorts = [ 52345 ];  # 透明代理 UDP 端口
+
+  # ==============================================================================
+  # 11. Nix 包管理器配置
   # ==============================================================================
 
   # 允许安装非自由软件（如 Steam、VSCode 等）
@@ -329,15 +347,7 @@
   };
 
   # ==============================================================================
-  # 10. 防火墙配置
-  # ==============================================================================
-
-  networking.firewall.enable = true;  # 启用防火墙
-  # 开放 TCP 端口：22（SSH）、2017（自定义服务）、3306（MySQL）
-  networking.firewall.allowedTCPPorts = [ 22 2017 3306 ];
-
-  # ==============================================================================
-  # 11. 字体配置
+  # 12. 字体配置
   # ==============================================================================
 
   # 安装系统字体（修复 VSCode 等应用启动问题）

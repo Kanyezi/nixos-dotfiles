@@ -106,6 +106,10 @@
       # 链接 clangd 配置文件夹
       rm -rf ~/.config/clangd
       ln -sf ~/dotfiles/config/clangd ~/.config/clangd
+
+      # 链接 v2raya 配置文件夹
+      rm -rf ~/.config/v2raya
+      ln -sf ~/dotfiles/config/v2raya ~/.config/v2raya
     '';
   };
 }
