@@ -179,48 +179,86 @@
   # 启用 nix-ld（允许运行未链接的预编译二进制文件）
   programs.nix-ld.enable = true;
 
-  # 系统级软件包列表
+  # 系统级软件包列表（按功能分组）
   environment.systemPackages = with pkgs; [
-    # --- 基础工具 ---
+    # ===== 基础工具 =====
     vim                     # Vim 文本编辑器
     wget                    # 命令行下载工具
     git                     # 分布式版本控制系统
     tree                    # 目录树显示工具
     unzip                   # ZIP 压缩文件解压工具
-    jdk21
+    jq                      # JSON 处理工具
+
+    # ===== 开发工具 =====
+    # C/C++
+    clang-tools             # C++ 语言服务器 (LSP) 和开发工具
+    gcc                     # GNU C 编译器
+    gnumake                 # GNU Make 构建工具
+    cmake                   # CMake 构建系统
+    pkg-config              # 编译配置工具
+
+    # Rust
+    rustc                   # Rust 编译器
+    cargo                   # Rust 包管理器
+    rustfmt                 # Rust 代码格式化
+    clippy                  # Rust 代码检查工具
+
+    # Python
+    python315               # Python 3.15
+
+    # Java
+    jdk21                   # Java 开发工具包 21
+    jdt-language-server     # Java 语言服务器
     mariadb-connector-java  # MariaDB JDBC 驱动
 
-    pkgs.wpsoffice-cn
-    pkgs.localsend
+    # Nix
+    nixd                    # Nix 语言服务器
 
-    # --- Shell 和终端 ---
+    # ===== 代码编辑器 =====
+    vscode                  # Visual Studio Code
+    pkgs-unstable.zed-editor  # Zed 高性能编辑器（unstable 通道）
+    emacs                   # GNU Emacs
+    neovim                  # Neovim
+
+    # ===== Shell 和终端 =====
     zsh                     # Zsh 交互式 Shell
-    kitty                   # GPU 加速的终端模拟器
+    kitty                   # GPU 加速终端模拟器
     alacritty               # 现代 GPU 终端模拟器
+    zoxide                  # 智能目录跳转工具
 
-    # --- 浏览器 ---
+    # ===== 浏览器 =====
     firefox                 # Firefox 网页浏览器
-    google-chrome            # Google Chrome
-    pkgs.chromium            # Chromium 开源浏览器（Google Chrome 的基础）
-    vlc
+    google-chrome           # Google Chrome
+    pkgs.chromium           # Chromium 开源浏览器
 
-    # --- 代码编辑器 ---
-    vscode                  # Visual Studio Code 代码编辑器
-    pkgs-unstable.zed-editor  # Zed 高性能代码编辑器（来自 unstable 通道）
-    nixd                    # Nix 语言服务器（提供 Nix 代码补全和诊断）
-    emacs
-    neovim
+    # ===== 办公和通讯 =====
+    pkgs.wpsoffice-cn       # WPS Office 中文版
+    pkgs.localsend          # 局域网文件传输
+    wechat-uos              # 微信客户端
+    qq                      # QQ 客户端
 
-    # --- 应用启动器 ---
+    # ===== 媒体和娱乐 =====
+    vlc                     # VLC 媒体播放器
+    steam                   # Steam 游戏平台
+    pkgs.lutris             # 游戏启动器
+    pkgs.wineWowPackages.wayland  # Wine（Wayland 支持）
+    steam-run               # Steam 运行环境
+
+    # ===== 窗口管理器相关 =====
+    # Niri 周边
     fuzzel                  # Wayland 应用启动器
+    brightnessctl           # 屏幕亮度控制
+    mako                    # Wayland 通知守护进程
+    swaybg                  # Wayland 背景设置
+    swaylock                # Wayland 屏幕锁定
+    swayidle                # Wayland 空闲管理
+    xwayland-satellite      # Xwayland 桥接工具
 
-    # --- 系统控制工具 ---
-    brightnessctl           # 屏幕亮度控制工具
+    # Noctalia Shell
+    inputs.noctalia.packages.${config.nixpkgs.system}.default
 
-    # --- 网络代理 ---
-    v2raya                  # V2Ray Web 管理界面
-
-    # --- VSCode Wayland 依赖库 ---
+    # ===== 图形库和依赖 =====
+    # VSCode / Electron 依赖
     libdrm                  # Direct Rendering Manager 库
     mesa                    # OpenGL/Vulkan 驱动
     xdg-utils               # XDG 桌面工具集
@@ -230,62 +268,31 @@
     at-spi2-atk             # 辅助功能支持库
     libxkbcommon            # XKB 键盘布局库
 
-    # --- Noctalia Shell 相关 ---
-    inputs.noctalia.packages.${config.nixpkgs.system}.default  # Noctalia Shell 桌面环境
-    adwaita-icon-theme      # Adwaita 图标主题（GNOME 默认）
-    hicolor-icon-theme      # 基础图标主题
-
-    # --- 输入法相关 ---
-    fcitx5-gtk                       # GTK 应用输入法支持
-    pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
-    pkgs.qt6Packages.fcitx5-chinese-addons  # Qt6 应用中文输入法支持（包含拼音）
-
-    # --- X11 兼容层 ---
-    xwayland                         # Xwayland（在 Wayland 中运行 X11 应用）
-
-    # --- 目录导航工具 ---
-    zoxide                           # 智能目录跳转工具（比 cd 更智能）
-
-    # --- C++ 开发工具 ---
-    clang-tools                      # C++ 语言服务器 (LSP) 和开发工具
-    gcc
-    gnumake
-    cmake
-    pkg-config
-    zenity
-    jq
-    jdt-language-server
-    nss.tools
-
-    # --- Rust 开发工具 ---
-    rustc
-    cargo
-    rustfmt
-    clippy
-
-    python315
-
-    # --- Zed 编辑器依赖 ---
+    # Zed 编辑器依赖
     vulkan-tools            # Vulkan 工具集
     xdg-desktop-portal-wlr  # Wayland 桌面门户
     libsecret               # 密钥存储库
 
-    # --- Niri 窗口管理器周边工具 ---
-    xwayland-satellite      # Xwayland 桥接工具（运行 X11 应用）
-    mako                    # Wayland 通知守护进程
-    swaybg                  # Wayland 背景设置工具
-    swaylock                # Wayland 屏幕锁定工具
-    swayidle                # Wayland 空闲管理工具
+    # X11 兼容层
+    xwayland                # Xwayland（在 Wayland 中运行 X11 应用）
 
-    # --- 游戏和娱乐 ---
-    steam                   # Steam 游戏平台
-    wechat-uos              # 微信客户端
-    qq                      # QQ 客户端
-    pkgs.lutris
-    pkgs.wineWowPackages.wayland
-    steam-run
+    # ===== 输入法 =====
+    fcitx5-gtk              # GTK 应用输入法支持
+    pkgs.qt6Packages.fcitx5-qt       # Qt6 应用输入法支持
+    pkgs.qt6Packages.fcitx5-chinese-addons  # 中文输入法支持
 
-    # --- 自定义脚本 ---
+    # ===== 网络代理 =====
+    v2raya                  # V2Ray Web 管理界面
+
+    # ===== 图标主题 =====
+    adwaita-icon-theme      # Adwaita 图标主题
+    hicolor-icon-theme      # 基础图标主题
+
+    # ===== 其他工具 =====
+    zenity                  # GTK 对话框工具
+    nss.tools               # NSS 安全工具
+
+    # ===== 自定义脚本 =====
     (pkgs.writeShellScriptBin "iflow" ''
       #!/run/current-system/sw/bin/bash
       export PATH="/home/gai_yk/.nvm/versions/node/v22.21.1/bin:$PATH"
@@ -316,7 +323,7 @@
   };
 
   # ==============================================================================
-  # 10. 防火墙配置
+  # 9. 防火墙配置
   # ==============================================================================
 
   networking.firewall.enable = true;  # 启用防火墙
@@ -326,7 +333,7 @@
   networking.firewall.allowedUDPPorts = [ 52345 ];  # 透明代理 UDP 端口
 
   # ==============================================================================
-  # 11. Nix 包管理器配置
+  # 10. Nix 包管理器配置
   # ==============================================================================
 
   # 允许安装非自由软件（如 Steam、VSCode 等）
@@ -349,7 +356,7 @@
   };
 
   # ==============================================================================
-  # 12. 字体配置
+  # 11. 字体配置
   # ==============================================================================
 
   # 安装系统字体（修复 VSCode 等应用启动问题）
