@@ -29,11 +29,13 @@
   system.stateVersion = "25.11";
 
   boot.kernelPackages = pkgs.linuxPackages_latest;   # 最新稳定，含 ntsync 内核支持
-  boot.kernelModules = [ "ntsync" ];
+  boot.kernelModules = [ "ntsync" "tun" ];  # 加载 ntsync 和 tun 内核模块（Zed 编辑器和 VPN 依赖）
   
   # 系统引导配置
   boot.loader.systemd-boot.enable = true;    # 启用 systemd-boot 引导加载器
   boot.loader.efi.canTouchEfiVariables = true;  # 允许修改 EFI 变量
+
+  
 
   # ==============================================================================
   # 2. 网络和国际化配置
