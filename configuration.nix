@@ -15,7 +15,7 @@
 # - nixos-help 命令
 # ==============================================================================
 
-{ config, lib, pkgs, pkgs-unstable, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   # ==============================================================================
@@ -103,16 +103,7 @@
       xdg-desktop-portal-gtk    # GTK 桌面门户（文件选择器等）
       xdg-desktop-portal-wlr    # Wayland 桌面门户
     ];
-    config = {
-      niri = {
-        default = "gtk";
-        "org.freedesktop.impl.portal.FileChooser" = "gtk";
-        "org.freedesktop.impl.portal.OpenURI" = "gtk";
-      };
-      common = {
-        default = "gtk";
-      };
-    };
+    config.common.default = "gtk";  # 通用默认门户
   };
 
   # ==============================================================================
@@ -216,7 +207,7 @@
 
     # ===== 代码编辑器 =====
     vscode                  # Visual Studio Code
-    pkgs-unstable.zed-editor  # Zed 高性能编辑器（unstable 通道）
+    pkgs.zed-editor         # Zed 高性能编辑器
     emacs                   # GNU Emacs
     neovim                  # Neovim
 
