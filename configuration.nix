@@ -243,6 +243,7 @@
     pkgs.lutris             # 游戏启动器
     pkgs.wineWowPackages.wayland  # Wine（Wayland 支持）
     steam-run               # Steam 运行环境
+    hmcl                    # Minecraft 启动器（支持 Java 和 Bedrock 版本）
 
     # ===== 窗口管理器相关 =====
     # Niri 周边
