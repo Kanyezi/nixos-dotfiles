@@ -80,7 +80,7 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # ==============================================================================
-  # 4. 桌面环境配置（Niri Wayland 窗口管理器）
+  # 4. 桌面环境配置（Niri Wayland 窗口管理器 + KDE Plasma）
   # ==============================================================================
 
   # 启用 Niri 窗口管理器（基于 Wayland 的动态平铺窗口管理器）
@@ -89,6 +89,15 @@
   # X11 服务器配置（用于运行 Xwayland 兼容 X11 应用）
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";  # 键盘布局
+
+  # SDDM 登录管理器（支持KDE Plasma和Niri的登录选择）
+  services.xserver.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;  # 启用Wayland支持
+  };
+
+  # KDE Plasma 6 桌面环境（最小化安装）
+  services.xserver.desktopManager.plasma6.enable = true;
 
   # PipeWire 音频服务（现代音频系统，替代 PulseAudio 和 JACK）
   services.pipewire = {
