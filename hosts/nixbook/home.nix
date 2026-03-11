@@ -110,6 +110,10 @@
       # 链接 v2raya 配置文件夹
       rm -rf ~/.config/v2raya
       ln -sf ~/dotfiles/config/v2raya ~/.config/v2raya
+
+      # 链接 Hyprland 配置文件夹
+      rm -rf ~/.config/hypr
+      ln -sf ~/dotfiles/hyprland ~/.config/hypr
     '';
   };
 }

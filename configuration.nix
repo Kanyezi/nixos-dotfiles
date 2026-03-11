@@ -86,6 +86,12 @@
   # 启用 Niri 窗口管理器（基于 Wayland 的动态平铺窗口管理器）
   programs.niri.enable = true;
 
+  # 启用 Hyprland 窗口管理器（基于 Wayland 的动态平铺窗口管理器）
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;  # 启用 Xwayland 支持
+  };
+
   # X11 服务器配置（用于运行 Xwayland 兼容 X11 应用）
   services.xserver.enable = true;
   services.xserver.xkb.layout = "us";  # 键盘布局
@@ -321,6 +327,9 @@
     # --- Electron 调试（可选）---
     ELECTRON_ENABLE_LOGGING = "1";   # 启用 Electron 日志
     ELECTRON_ENABLE_STACK_DUMPING = "1";  # 启用堆栈转储
+
+    # --- Hyprland 相关 ---
+    XDG_CURRENT_DESKTOP = "Hyprland";  # 设置当前桌面环境为 Hyprland
   };
 
   # ==============================================================================

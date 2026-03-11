@@ -51,6 +51,13 @@
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Hyprland 窗口管理器
+    # 基于 Wayland 的动态平铺窗口管理器
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # ==============================================================================
@@ -58,7 +65,7 @@
   # ==============================================================================
   # 定义 Flake 构建的所有输出，包括 NixOS 系统配置
   
-  outputs = { self, nixpkgs, niri, home-manager, noctalia, quickshell }@inputs:
+  outputs = { self, nixpkgs, niri, home-manager, noctalia, quickshell, hyprland }@inputs:
     let
       # 系统架构
       system = "x86_64-linux";
